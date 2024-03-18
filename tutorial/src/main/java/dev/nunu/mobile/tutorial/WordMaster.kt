@@ -1,4 +1,4 @@
-package dev.nunu.mobile.konkuk
+package dev.nunu.mobile.tutorial
 
 import java.io.FileInputStream
 

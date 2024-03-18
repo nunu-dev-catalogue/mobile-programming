@@ -1,4 +1,4 @@
-package dev.nunu.mobile.konkuk
+package dev.nunu.mobile.tutorial
 
 fun main() {
     println("201811218 이현우")

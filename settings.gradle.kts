@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MobileProgramming"
 include(":app")
+include(":tutorial")
