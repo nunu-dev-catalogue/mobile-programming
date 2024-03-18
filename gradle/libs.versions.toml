@@ -37,4 +37,6 @@ junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5Plugin" }
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 
 [bundles]
-androidxCompose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-ui-tooling-preview", "androidx-ui-test-manifest", "androidx-ui-test-junit4", "androidx-material3"]
+androidxCompose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-ui-tooling-preview", "androidx-material3"]
+androidTestCompose = ["androidx-ui-test-junit4", "androidx-junit", "androidx-espresso-core"]
+debugCompose = ["androidx-ui-tooling", "androidx-ui-test-manifest"]
