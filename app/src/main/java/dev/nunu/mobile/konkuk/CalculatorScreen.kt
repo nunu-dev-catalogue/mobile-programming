@@ -56,9 +56,9 @@ data class CalculatorState(
                 return ""
             }
             val tip = if (isRoundUp) {
-                (tipPercentage.toDouble()) / 100 * (billAmount.toDouble())
-            } else {
                 ceil((tipPercentage.toDouble()) / 100 * (billAmount.toDouble()))
+            } else {
+                (tipPercentage.toDouble()) / 100 * (billAmount.toDouble())
             }
             return NumberFormat.getCurrencyInstance().format(tip)
         }
