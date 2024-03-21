@@ -15,12 +15,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -86,55 +88,64 @@ fun rememberBmiState() = rememberSaveable(stateSaver = BmiState.Saver) {
     mutableStateOf(BmiState())
 }
 
+val LocalDispatcher = staticCompositionLocalOf<(BmiState) -> Unit> {
+    error("No Dispatcher provided")
+}
+
 @Composable
 fun BMIScreen() {
     var state by rememberBmiState()
     val focusManager = LocalFocusManager.current
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 40.dp),
-        verticalArrangement = Arrangement.Center
+    CompositionLocalProvider(
+        LocalDispatcher provides { state = it }
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+        val dispatcher = LocalDispatcher.current
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 40.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "키 입력 단위 미터(m)?")
-            HorizontalSpacer(width = 12.dp)
-            Switch(
-                checked = state.isMeter,
-                onCheckedChange = { state = state.copy(isMeter = it) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "키 입력 단위 미터(m)?")
+                HorizontalSpacer(width = 12.dp)
+                Switch(
+                    checked = state.isMeter,
+                    onCheckedChange = { dispatcher(state.copy(isMeter = it)) }
+                )
+            }
+            VerticalSpacer(height = 16.dp)
+            OutlinedTextField(
+                value = state.height,
+                onValueChange = { dispatcher(state.copy(height = it)) },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("키(${state.meterPlaceholder})") },
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                )
             )
-        }
-        VerticalSpacer(height = 16.dp)
-        OutlinedTextField(
-            value = state.height,
-            onValueChange = { state = state.copy(height = it) },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("키(${state.meterPlaceholder})") },
-            keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            VerticalSpacer(height = 32.dp)
+            OutlinedTextField(
+                value = state.weight,
+                onValueChange = { state = state.copy(weight = it) },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("몸무게(kg)") },
+                keyboardActions = KeyboardActions(
+                    onDone = { focusManager.clearFocus() }
+                )
             )
-        )
-        VerticalSpacer(height = 32.dp)
-        OutlinedTextField(
-            value = state.weight,
-            onValueChange = { state = state.copy(weight = it) },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text("몸무게(kg)") },
-            keyboardActions = KeyboardActions(
-                onDone = { focusManager.clearFocus() }
-            )
-        )
-        VerticalSpacer(height = 32.dp)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(state.bmi, style = MaterialTheme.typography.headlineMedium)
+            VerticalSpacer(height = 32.dp)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(state.bmi, style = MaterialTheme.typography.headlineMedium)
+            }
         }
     }
 }
