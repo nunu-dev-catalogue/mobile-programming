@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -97,13 +98,14 @@ fun CalculatorScreen() {
             .padding(horizontal = 40.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Calculate Tip")
+        Text("201811218 이현우")
+        Text(text = stringResource(id = R.string.calculator_tip))
         VerticalSpacer(height = 16.dp)
         OutlinedTextField(
             value = state.billAmount,
             onValueChange = { state = state.copy(billAmount = it) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Bill Amount") },
+            label = { Text(text = stringResource(id = R.string.bill_amount)) },
             leadingIcon = {
                 Image(
                     imageVector = Icons.Filled.Money,
@@ -119,7 +121,7 @@ fun CalculatorScreen() {
             value = state.tipPercentage,
             onValueChange = { state = state.copy(tipPercentage = it) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Tip Percentage") },
+            label = { Text(stringResource(id = R.string.how_was_the_service)) },
             leadingIcon = {
                 Image(
                     imageVector = Icons.Filled.Money,
@@ -136,7 +138,7 @@ fun CalculatorScreen() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Round up tip?")
+            Text(text = stringResource(id = R.string.round_up_tip))
             Switch(
                 checked = state.isRoundUp,
                 onCheckedChange = { state = state.copy(isRoundUp = it) })
@@ -147,7 +149,10 @@ fun CalculatorScreen() {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Tip Amount: ${state.tipAmount}", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                text = stringResource(id = R.string.tip_amount, state.tipAmount),
+                style = MaterialTheme.typography.headlineMedium
+            )
         }
     }
 }

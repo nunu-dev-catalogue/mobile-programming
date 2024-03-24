@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MobileProgramming</string>
     <string name="hello_world">Hello world!</string>
+    <string name="calculator_tip">Calculator Tip</string>
     <string name="bill_amount">Bill Amount</string>
     <string name="how_was_the_service">Tip Percentage</string>
     <string name="round_up_tip">Round up tip?</string>
