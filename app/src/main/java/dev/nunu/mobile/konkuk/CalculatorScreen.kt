@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -95,48 +96,33 @@ fun CalculatorScreen() {
         Text("201811218 이현우")
         Text(text = stringResource(id = R.string.calculator_tip))
         VerticalSpacer(height = 16.dp)
-        OutlinedTextField(
-            value = state.billAmount,
+        NumberTextField(
+            text = state.billAmount,
             onValueChange = { state = state.copy(billAmount = it) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = stringResource(id = R.string.bill_amount)) },
-            leadingIcon = {
-                Image(
-                    imageVector = Icons.Filled.Money,
-                    contentDescription = "Money"
-                )
-            },
-            keyboardActions = KeyboardActions(
+            label = stringResource(id = R.string.bill_amount),
+            icon = Icons.Filled.Money,
+            action = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             )
         )
         VerticalSpacer(height = 32.dp)
-        OutlinedTextField(
-            value = state.tipPercentage,
+        NumberTextField(
+            icon = Icons.Filled.Money,
+            text = state.tipPercentage,
             onValueChange = { state = state.copy(tipPercentage = it) },
+            label = stringResource(id = R.string.how_was_the_service),
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(id = R.string.how_was_the_service)) },
-            leadingIcon = {
-                Image(
-                    imageVector = Icons.Filled.Money,
-                    contentDescription = "Money"
-                )
-            },
-            keyboardActions = KeyboardActions(
+            action = KeyboardActions(
                 onDone = { focusManager.clearFocus() }
             )
         )
         VerticalSpacer(height = 32.dp)
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = stringResource(id = R.string.round_up_tip))
-            Switch(
-                checked = state.isRoundUp,
-                onCheckedChange = { state = state.copy(isRoundUp = it) })
-        }
+        SwitchRow(
+            label = stringResource(id = R.string.round_up_tip),
+            value = state.isRoundUp,
+            onValueChange = { state = state.copy(isRoundUp = it) }
+        )
         VerticalSpacer(height = 32.dp)
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -148,6 +134,49 @@ fun CalculatorScreen() {
                 style = MaterialTheme.typography.headlineMedium
             )
         }
+    }
+}
+
+@Composable
+fun NumberTextField(
+    icon: ImageVector,
+    text: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+    action: KeyboardActions = KeyboardActions.Default
+) {
+    OutlinedTextField(
+        value = text,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        label = { Text(text = label) },
+        leadingIcon = {
+            Image(
+                imageVector = icon,
+                contentDescription = "Money"
+            )
+        },
+        keyboardActions = action
+    )
+}
+
+@Composable
+fun SwitchRow(
+    label: String,
+    value: Boolean,
+    onValueChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = label)
+        Switch(
+            checked = value,
+            onCheckedChange = onValueChange
+        )
     }
 }
 
