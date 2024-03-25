@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Money
@@ -39,11 +38,6 @@ import kotlin.math.ceil
 @Composable
 private fun VerticalSpacer(height: Dp) {
     Spacer(modifier = Modifier.height(height))
-}
-
-@Composable
-private fun HorizontalSpacer(width: Dp) {
-    Spacer(modifier = Modifier.width(width))
 }
 
 data class CalculatorState(
