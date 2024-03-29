@@ -104,8 +104,10 @@ fun BMIScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 40.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(text = "201811218 이현우")
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -123,6 +125,7 @@ fun BMIScreen() {
                 value = state.height,
                 onValueChange = { dispatcher(state.copy(height = it)) },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 label = { Text("키(${state.meterPlaceholder})") },
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) }
@@ -133,6 +136,7 @@ fun BMIScreen() {
                 value = state.weight,
                 onValueChange = { state = state.copy(weight = it) },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
                 label = { Text("몸무게(kg)") },
                 keyboardActions = KeyboardActions(
                     onDone = { focusManager.clearFocus() }
