@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidxCompose)
+    implementation(libs.coil)
     testImplementation(libs.junit)
     testImplementation(libs.junit5.api)
     testImplementation(libs.junit5.params)
