@@ -1,6 +1,5 @@
 package dev.nunu.mobile.konkuk.image
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -17,10 +16,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.listSaver
-import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -28,88 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import dev.nunu.mobile.konkuk.R
 
-sealed interface ImageModel {
-    val counter: Int
-
-    data class LocalImage(
-        @DrawableRes val imageModel: Int,
-        override val counter: Int
-    ) : ImageModel {
-        companion object {
-            private const val IMAGE_ID = "imageId"
-            private const val COUNTER_ID = "counterId"
-            val MAP_SAVER = mapSaver(
-                save = { model ->
-                    mapOf(
-                        IMAGE_ID to model.imageModel,
-                        COUNTER_ID to model.counter
-                    )
-                },
-                restore = { map ->
-                    LocalImage(
-                        imageModel = map[IMAGE_ID]!! as Int,
-                        counter = map[COUNTER_ID]!! as Int
-                    )
-                }
-            )
-            val LIST_SAVER = listSaver(
-                save = {
-                    listOf(
-                        it.imageModel,
-                        it.counter
-                    )
-                },
-                restore = {
-                    LocalImage(
-                        imageModel = it[0] as Int,
-                        counter = it[1] as Int
-                    )
-                }
-            )
-        }
-    }
-
-    data class NetworkImage(
-        val url: String,
-        override val counter: Int
-    ) : ImageModel {
-        companion object {
-            private const val URL_ID = "urlId"
-            private const val COUNTER_ID = "counterId"
-            val MAP_SAVER = mapSaver(
-                save = { model ->
-                    mapOf(
-                        URL_ID to model.url,
-                        COUNTER_ID to model.counter
-                    )
-                },
-                restore = { map ->
-                    NetworkImage(
-                        url = map[URL_ID]!! as String,
-                        counter = map[COUNTER_ID]!! as Int
-                    )
-                }
-            )
-            val LIST_SAVER = listSaver(
-                save = {
-                    listOf(
-                        it.url,
-                        it.counter
-                    )
-                },
-                restore = {
-                    NetworkImage(
-                        url = it[0] as String,
-                        counter = it[1] as Int
-                    )
-                }
-            )
-        }
-    }
-}
 
 @Composable
 fun ImageWithSlot(
@@ -174,6 +94,7 @@ fun IconWithBadge(
 
 @Composable
 fun ImageScreen() {
+    val imageViewModel = viewModel<ImageViewModel>()
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -191,6 +112,7 @@ fun ImageScreen() {
         var counter3 by rememberSaveable(stateSaver = ImageModel.LocalImage.MAP_SAVER) {
             mutableStateOf(ImageModel.LocalImage(R.drawable.image3, 0))
         }
+
         var counter4 by rememberSaveable(stateSaver = ImageModel.NetworkImage.MAP_SAVER) {
             mutableStateOf(
                 ImageModel.NetworkImage(
@@ -200,45 +122,47 @@ fun ImageScreen() {
             )
         }
 
+        val state by imageViewModel.imageList.collectAsState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ImageWithSlot(
-                imageModel = counter1
+                imageModel = state[0]
             ) {
                 ButtonWithIcon(
-                    counter = counter1.counter,
-                    onClick = { counter1 = counter1.copy(counter = counter1.counter + 1) }
+                    counter = state[0].counter,
+                    onClick = { imageViewModel.increaseCounterOf(0) }
                 )
             }
             ImageWithSlot(
-                imageModel = counter2
+                imageModel = state[1]
             ) {
                 IconWithBadge(
-                    counter = counter2.counter,
-                    onClick = { counter2 = counter2.copy(counter = counter2.counter + 1) }
+                    counter = state[1].counter,
+                    onClick = { imageViewModel.increaseCounterOf(1) }
                 )
             }
             ImageWithSlot(
-                imageModel = counter3
+                imageModel = state[2]
             ) {
                 ButtonWithIcon(
-                    counter = counter3.counter,
-                    onClick = { counter3 = counter3.copy(counter = counter3.counter + 1) }
+                    counter = state[2].counter,
+                    onClick = { imageViewModel.increaseCounterOf(2) }
                 )
             }
             ImageWithSlot(
-                imageModel = counter4
+                imageModel = state[3]
             ) {
                 IconWithBadge(
-                    counter = counter4.counter,
-                    onClick = { counter4 = counter4.copy(counter = counter4.counter + 1) }
+                    counter = state[3].counter,
+                    onClick = { imageViewModel.increaseCounterOf(3) }
                 )
             }
             AsyncImage(
-                model = "https://www.kaggle.com/competitions/6799/images/header.png",
+                model = (state[4] as ImageModel.NetworkImage).url,
                 contentDescription = "미도리야"
             )
         }
