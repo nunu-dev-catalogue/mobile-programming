@@ -15,6 +15,7 @@ jetbrainsKotlinJvm = "1.9.22"
 kotest = "5.8.1"
 coil = "2.6.0"
 lifecycleViewmodelCompose = "2.7.0"
+navigation = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +43,7 @@ kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", vers
 kotest-property = { group = "io.kotest", name = "kotest-property", version.ref = "kotest" }
 coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

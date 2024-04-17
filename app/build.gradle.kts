@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.bundles.androidxCompose)
     implementation(libs.coil)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     testImplementation(libs.junit5.api)
     testImplementation(libs.junit5.params)
