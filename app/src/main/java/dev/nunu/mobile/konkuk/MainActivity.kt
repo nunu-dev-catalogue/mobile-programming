@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import dev.nunu.mobile.konkuk.intent.InstalledAppsScreen
 import dev.nunu.mobile.konkuk.navigation.login.LoginNavGraph
 import dev.nunu.mobile.konkuk.ui.theme.MobileProgrammingTheme
 
@@ -13,8 +14,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MobileProgrammingTheme {
                 // A surface container using the 'background' color from the theme
-                val navController = rememberNavController()
-                LoginNavGraph(navController = navController)
+                // val navController = rememberNavController()
+                // LoginNavGraph(navController = navController)
+                InstalledAppsScreen()
             }
         }
     }
